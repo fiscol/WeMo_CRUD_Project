@@ -1,38 +1,41 @@
+import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
 import { ApiProperty } from '@nestjs/swagger';
 
-export class CreateMotorDto {
+@Entity()
+export class Motor {
   @ApiProperty({
-    type: String,
-    required: true,
+    example: 1,
+  })
+  @PrimaryGeneratedColumn()
+  id: number;
+
+  @ApiProperty({
     example: 'ABC-123',
   })
+  @Column()
   name: string;
 
   @ApiProperty({
-    type: Number,
-    required: true,
     example: 1,
   })
+  @Column()
   age: number;
 
   @ApiProperty({
-    type: Number,
-    required: true,
     example: 150,
   })
+  @Column()
   distance: number;
 
   @ApiProperty({
-    type: String,
-    required: true,
     example: 'Taipei',
   })
+  @Column()
   city: string;
 
   @ApiProperty({
-    type: String,
-    required: true,
     example: 'Xinyi',
   })
+  @Column()
   area: string;
 }

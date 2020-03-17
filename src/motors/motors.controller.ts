@@ -1,39 +1,133 @@
-import { Controller, Get, Query, Post, Body, Put, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Put,
+  Param,
+  Delete,
+  Response,
+  UseFilters,
+  HttpStatus,
+  HttpException,
+} from '@nestjs/common';
 import { CreateMotorDto } from './dto/create-motor.dto';
 import { UpdateMotorDto } from './dto/update-motor.dto';
-import { ListAllMotors } from './dto/list-all-motors.dto';
 import { MotorsService } from './motors.service';
-import { Motor } from './interfaces/motor.interface';
+import { Motor } from './motor.entity';
+import { HttpExceptionFilter } from '../http-exception.filter';
+import {
+  ApiTags,
+  ApiBody,
+  ApiParam,
+  ApiCreatedResponse,
+  ApiResponse,
+} from '@nestjs/swagger';
 
-
+@ApiTags('motors')
 @Controller('motors')
+@UseFilters(new HttpExceptionFilter())
 export class MotorsController {
-    constructor(private readonly motorsService: MotorsService) { }
+  constructor(private readonly motorsService: MotorsService) {}
 
-    @Post()
-    async create(@Body() createMotorDto: CreateMotorDto) {
-        this.motorsService.create(createMotorDto);
-        // return 'This action adds a new motor';
-    }
+  @Post()
+  @ApiBody({ type: CreateMotorDto })
+  @ApiCreatedResponse({
+    status: 201,
+    description: 'The motor record has been successfully created.',
+    type: Motor,
+  })
+  @ApiResponse({ status: 403, description: 'Forbidden.' })
+  async create(@Body() createMotorDto: CreateMotorDto, @Response() res) {
+    await this.motorsService
+      .create(createMotorDto)
+      .then(result => {
+        // return result;
+        res.status(HttpStatus.CREATED).json(result);
+      })
+      .catch(error => {
+        throw new HttpException(error, HttpStatus.FORBIDDEN);
+      });
+  }
 
-    @Get()
-    async findAll(): Promise<Motor[]> {
-        return this.motorsService.findAll();
-        // return `This action returns all motors (limit: ${query.limit} items)`;
-    }
+  @Get()
+  @ApiResponse({
+    status: 200,
+    description: 'Received motor records.',
+  })
+  @ApiResponse({ status: 403, description: 'Forbidden.' })
+  async findAll(@Response() res) {
+    await this.motorsService
+      .findAll()
+      .then(result => {
+        // return result;
+        res.status(HttpStatus.OK).json(result);
+      })
+      .catch(error => {
+        throw new HttpException(error, HttpStatus.FORBIDDEN);
+      });
+  }
 
-    @Get(':id')
-    findOne(@Param('id') id: string) {
-        return `This action returns a #${id} motor`;
-    }
+  @Get(':id')
+  @ApiParam({ name: 'id', type: Number })
+  @ApiResponse({
+    status: 200,
+    description: 'Received specific motor record.',
+  })
+  @ApiResponse({ status: 403, description: 'Forbidden.' })
+  async findOne(@Param('id') id: number, @Response() res) {
+    await this.motorsService
+      .findOne(id)
+      .then(result => {
+        // return result;
+        res.status(HttpStatus.OK).json(result);
+      })
+      .catch(error => {
+        throw new HttpException(error, HttpStatus.FORBIDDEN);
+      });
+  }
 
-    @Put(':id')
-    update(@Param('id') id: string, @Body() updateMotorDto: UpdateMotorDto) {
-        return `This action updates a #${id} motor`;
-    }
+  @Put(':id')
+  @ApiParam({ name: 'id', type: Number })
+  @ApiBody({ type: UpdateMotorDto })
+  @ApiResponse({
+    status: 200,
+    description: 'Update motor information completed.',
+    type: Motor,
+  })
+  @ApiResponse({ status: 403, description: 'Forbidden.' })
+  async update(
+    @Param('id') id: number,
+    @Body() updateMotorDto: UpdateMotorDto,
+    @Response() res,
+  ) {
+    await this.motorsService
+      .update(id, updateMotorDto)
+      .then(result => {
+        // return result;
+        res.status(HttpStatus.OK).json(result);
+      })
+      .catch(error => {
+        throw new HttpException(error, HttpStatus.FORBIDDEN);
+      });
+  }
 
-    @Delete(':id')
-    remove(@Param('id') id: string) {
-        return `This action removes a #${id} motor`;
-    }
+  @Delete(':id')
+  @ApiParam({ name: 'id', type: Number })
+  @ApiResponse({
+    status: 200,
+    description: 'Delete with motor id succeed.',
+  })
+  @ApiResponse({ status: 403, description: 'Forbidden.' })
+  async remove(@Param('id') id: number, @Response() res) {
+    await this.motorsService
+      .remove(id)
+      .then(result => {
+        // return result;
+        res.status(HttpStatus.OK).json(result);
+      })
+      .catch(error => {
+        throw new HttpException(error, HttpStatus.FORBIDDEN);
+      });
+  }
 }
