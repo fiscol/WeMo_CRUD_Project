@@ -13,7 +13,7 @@ This simple project is built through [HTTP/1.1 request](https://www.w3.org/Proto
 ## Installation
 
 ```bash
-$ git clone ''
+$ git clone 'https://github.com/fiscol/WeMo_CRUD_Project.git'
 $ yarn install
 ```
 
