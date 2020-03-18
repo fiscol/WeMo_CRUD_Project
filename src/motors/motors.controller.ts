@@ -8,13 +8,15 @@ import {
   Delete,
   Response,
   UseFilters,
+  UsePipes,
   HttpStatus,
-  HttpException,
+  HttpException
 } from '@nestjs/common';
 import { CreateMotorDto } from './dto/create-motor.dto';
 import { UpdateMotorDto } from './dto/update-motor.dto';
 import { MotorsService } from './motors.service';
 import { Motor } from './motor.entity';
+import { ValidationPipe } from './pipes/validation.pipe'
 import { HttpExceptionFilter } from '../http-exception.filter';
 import {
   ApiTags,
@@ -28,18 +30,20 @@ import {
 @Controller('motors')
 @UseFilters(new HttpExceptionFilter())
 export class MotorsController {
-  constructor(private readonly motorsService: MotorsService) {}
+  constructor(private readonly motorsService: MotorsService) { }
 
   // POST(create) a motor API
   @Post()
+  @UsePipes(ValidationPipe)
   @ApiBody({ type: CreateMotorDto })
   @ApiCreatedResponse({
     status: 201,
     description: 'The motor record has been successfully created.',
     type: Motor,
   })
+  @ApiResponse({ status: 400, description: 'Validation failed.' })
   @ApiResponse({ status: 403, description: 'Forbidden.' })
-  async create(@Body() createMotorDto: CreateMotorDto, @Response() res) {
+  async create(@Body(new ValidationPipe()) createMotorDto: CreateMotorDto, @Response() res) {
     await this.motorsService
       .create(createMotorDto)
       .then(result => {
@@ -89,6 +93,7 @@ export class MotorsController {
 
   // UPDATE a motor with ID API
   @Put(':id')
+  @UsePipes(ValidationPipe)
   @ApiParam({ name: 'id', type: Number })
   @ApiBody({ type: UpdateMotorDto })
   @ApiResponse({
@@ -96,10 +101,11 @@ export class MotorsController {
     description: 'Update motor information completed.',
     type: Motor,
   })
+  @ApiResponse({ status: 400, description: 'Validation failed.' })
   @ApiResponse({ status: 403, description: 'Forbidden.' })
   async update(
     @Param('id') id: number,
-    @Body() updateMotorDto: UpdateMotorDto,
+    @Body(new ValidationPipe()) updateMotorDto: UpdateMotorDto,
     @Response() res,
   ) {
     await this.motorsService

@@ -1,6 +1,6 @@
 # WeMo CRUD Project
 
-This simple project is built through [NestJS](hhttps://docs.nestjs.com/), and implements basic RESTful CRUD requests. We could use these services API to register 'Motors' to our RDS MySQL Database.
+This simple project is built with [NestJS](https://docs.nestjs.com/), and implements basic RESTful CRUD requests. We could use these services API to register 'Motors' to our RDS MySQL Database.
 
 ## Table of contents
 * [Installation](#installation)

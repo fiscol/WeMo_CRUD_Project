@@ -1,4 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { IsNotEmpty, IsString, IsNumber } from 'class-validator';
 
 export class CreateMotorDto {
   @ApiProperty({
@@ -6,6 +7,8 @@ export class CreateMotorDto {
     required: true,
     example: 'ABC-123',
   })
+  @IsNotEmpty()
+  @IsString()
   name: string;
 
   @ApiProperty({
@@ -13,6 +16,8 @@ export class CreateMotorDto {
     required: true,
     example: 1,
   })
+  @IsNotEmpty()
+  @IsNumber()
   age: number;
 
   @ApiProperty({
@@ -20,6 +25,8 @@ export class CreateMotorDto {
     required: true,
     example: 150,
   })
+  @IsNotEmpty()
+  @IsNumber()
   distance: number;
 
   @ApiProperty({
@@ -27,6 +34,8 @@ export class CreateMotorDto {
     required: true,
     example: 'Taipei',
   })
+  @IsNotEmpty()
+  @IsString()
   city: string;
 
   @ApiProperty({
@@ -34,5 +43,7 @@ export class CreateMotorDto {
     required: true,
     example: 'Xinyi',
   })
+  @IsNotEmpty()
+  @IsString()
   area: string;
 }

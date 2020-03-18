@@ -5,6 +5,7 @@ import { ApiProperty } from '@nestjs/swagger';
 export class Motor {
   @ApiProperty({
     example: 1,
+    required: false,
   })
   @PrimaryGeneratedColumn()
   id: number;
