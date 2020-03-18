@@ -10,13 +10,13 @@ import {
   UseFilters,
   UsePipes,
   HttpStatus,
-  HttpException
+  HttpException,
 } from '@nestjs/common';
 import { CreateMotorDto } from './dto/create-motor.dto';
 import { UpdateMotorDto } from './dto/update-motor.dto';
 import { MotorsService } from './motors.service';
 import { Motor } from './motor.entity';
-import { ValidationPipe } from './pipes/validation.pipe'
+import { ValidationPipe } from './pipes/validation.pipe';
 import { HttpExceptionFilter } from '../http-exception.filter';
 import {
   ApiTags,
@@ -30,7 +30,7 @@ import {
 @Controller('motors')
 @UseFilters(new HttpExceptionFilter())
 export class MotorsController {
-  constructor(private readonly motorsService: MotorsService) { }
+  constructor(private readonly motorsService: MotorsService) {}
 
   // POST(create) a motor API
   @Post()
@@ -43,7 +43,10 @@ export class MotorsController {
   })
   @ApiResponse({ status: 400, description: 'Validation failed.' })
   @ApiResponse({ status: 403, description: 'Forbidden.' })
-  async create(@Body(new ValidationPipe()) createMotorDto: CreateMotorDto, @Response() res) {
+  async create(
+    @Body(new ValidationPipe()) createMotorDto: CreateMotorDto,
+    @Response() res,
+  ) {
     await this.motorsService
       .create(createMotorDto)
       .then(result => {
