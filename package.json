@@ -1,8 +1,8 @@
 {
   "name": "we-mo-crudproject",
   "version": "1.0.0",
-  "description": "",
-  "author": "",
+  "description": "WeMo CRUD Project is a simple project is built through [NestJS](hhttps://docs.nestjs.com/), and implements basic RESTful CRUD requests. We could use these services API to register 'Motors' to our RDS MySQL Database.",
+  "author": "Fiscol Wu",
   "license": "MIT",
   "scripts": {
     "prebuild": "rimraf dist",

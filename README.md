@@ -1,6 +1,6 @@
 # WeMo CRUD Project
 
-This simple project is built through [HTTP/1.1 request](https://www.w3.org/Protocols/rfc2616/rfc2616-sec5.html), which implements basic RESTful CRUD requests. We could use these services API to register 'Motors' to our MySQL Database.
+This simple project is built through [NestJS](hhttps://docs.nestjs.com/), and implements basic RESTful CRUD requests. We could use these services API to register 'Motors' to our RDS MySQL Database.
 
 ## Table of contents
 * [Installation](#installation)
@@ -14,6 +14,7 @@ This simple project is built through [HTTP/1.1 request](https://www.w3.org/Proto
 
 ```bash
 $ git clone 'https://github.com/fiscol/WeMo_CRUD_Project.git'
+# Go to the project directory (WeMo_CRUD_Project)
 $ yarn install
 ```
 
@@ -45,7 +46,7 @@ $ yarn test:cov
 
 ## Documentation
 
-Read the [Swagger](http://swagger.io) based [Document API](http://localhost:3000/api) and implement the CRUD API with examples data on your local browser!
+Run this project first, and read the [Swagger](http://swagger.io) based [Document API](http://localhost:3000/api) and implement the CRUD API with examples data on your local browser!
 
 ## Powered by
 
