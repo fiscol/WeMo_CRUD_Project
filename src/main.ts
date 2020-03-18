@@ -4,6 +4,7 @@ import { AppModule } from './app.module';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+  // Add Swagger document settings
   const options = new DocumentBuilder()
     .setTitle('WeMo CRUD Project example')
     .setDescription('The WeMo CRUD API description')

@@ -30,6 +30,7 @@ import {
 export class MotorsController {
   constructor(private readonly motorsService: MotorsService) {}
 
+  // POST(create) a motor API
   @Post()
   @ApiBody({ type: CreateMotorDto })
   @ApiCreatedResponse({
@@ -42,7 +43,6 @@ export class MotorsController {
     await this.motorsService
       .create(createMotorDto)
       .then(result => {
-        // return result;
         res.status(HttpStatus.CREATED).json(result);
       })
       .catch(error => {
@@ -50,6 +50,7 @@ export class MotorsController {
       });
   }
 
+  // GET all motors API
   @Get()
   @ApiResponse({
     status: 200,
@@ -60,7 +61,6 @@ export class MotorsController {
     await this.motorsService
       .findAll()
       .then(result => {
-        // return result;
         res.status(HttpStatus.OK).json(result);
       })
       .catch(error => {
@@ -68,6 +68,7 @@ export class MotorsController {
       });
   }
 
+  // GET a motor with ID API
   @Get(':id')
   @ApiParam({ name: 'id', type: Number })
   @ApiResponse({
@@ -79,7 +80,6 @@ export class MotorsController {
     await this.motorsService
       .findOne(id)
       .then(result => {
-        // return result;
         res.status(HttpStatus.OK).json(result);
       })
       .catch(error => {
@@ -87,6 +87,7 @@ export class MotorsController {
       });
   }
 
+  // UPDATE a motor with ID API
   @Put(':id')
   @ApiParam({ name: 'id', type: Number })
   @ApiBody({ type: UpdateMotorDto })
@@ -104,7 +105,6 @@ export class MotorsController {
     await this.motorsService
       .update(id, updateMotorDto)
       .then(result => {
-        // return result;
         res.status(HttpStatus.OK).json(result);
       })
       .catch(error => {
@@ -112,6 +112,7 @@ export class MotorsController {
       });
   }
 
+  // DELETE a motor with ID API
   @Delete(':id')
   @ApiParam({ name: 'id', type: Number })
   @ApiResponse({
@@ -123,7 +124,6 @@ export class MotorsController {
     await this.motorsService
       .remove(id)
       .then(result => {
-        // return result;
         res.status(HttpStatus.OK).json(result);
       })
       .catch(error => {

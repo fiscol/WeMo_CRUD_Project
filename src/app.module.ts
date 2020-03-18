@@ -6,6 +6,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 
 @Module({
+  // Databese connection config, import Motors module
   imports: [
     TypeOrmModule.forRoot({
       type: 'mysql',

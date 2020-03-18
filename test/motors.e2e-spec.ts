@@ -3,15 +3,18 @@ import { Test } from '@nestjs/testing';
 import { MotorsModule } from '../src/motors/motors.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { MotorsService } from '../src/motors/motors.service';
-import { CreateMotorDto } from '../src/motors/dto/create-motor.dto';
-import { UpdateMotorDto } from '../src/motors/dto/update-motor.dto';
 import { Motor } from '../src/motors/motor.entity';
+import {
+  createMotorDataArr,
+  dataToUpdate,
+} from '../src/motors/constant/motor.constants';
 import { INestApplication, HttpStatus } from '@nestjs/common';
 
 describe('Motors', () => {
   let app: INestApplication;
   let motorsService: MotorsService;
 
+  // Test Databese connection config, import Motors module
   beforeAll(async () => {
     const moduleRef = await Test.createTestingModule({
       imports: [
@@ -38,24 +41,21 @@ describe('Motors', () => {
     await app.init();
   });
 
+  // Close app after testing finished
   afterAll(async () => {
     await app.close();
   });
 
+  // Test all API calls
   describe('Motors API E2E Check', () => {
-    const createMotorDto: CreateMotorDto = {
-      name: 'ABC-001',
-      age: 1,
-      distance: 0,
-      city: 'Taipei',
-      area: 'Daan',
-    };
+    const createMotorDto = createMotorDataArr[0];
 
+    // POST Motor API test
     it(`/POST motor`, () => {
       return request(app.getHttpServer())
         .post('/motors')
         .set('Accept', 'application/json')
-        .send(createMotorDto)
+        .send(createMotorDataArr[0])
         .expect(({ body }) => {
           expect(body.id).toBeDefined();
           expect(body.name).toEqual(createMotorDto.name);
@@ -67,6 +67,7 @@ describe('Motors', () => {
         .expect(HttpStatus.CREATED);
     });
 
+    // GET All Motors API test
     it(`/GET motors`, () => {
       return request(app.getHttpServer())
         .get('/motors')
@@ -79,11 +80,7 @@ describe('Motors', () => {
         .expect(HttpStatus.OK);
     });
 
-    const dataToUpdate = new UpdateMotorDto();
-    dataToUpdate.name = 'AAA-111';
-    dataToUpdate.age = 3;
-    dataToUpdate.distance = 35000;
-
+    // UPDATE Motor with ID API test
     it(`/Update motor with specific ID`, () => {
       return request(app.getHttpServer())
         .put('/motors/1')
@@ -97,6 +94,7 @@ describe('Motors', () => {
         .expect(HttpStatus.OK);
     });
 
+    // GET Motor with ID API test
     it(`/Get motor with specific ID`, () => {
       return request(app.getHttpServer())
         .get('/motors/1')
@@ -106,11 +104,12 @@ describe('Motors', () => {
           expect(body.age).toEqual(dataToUpdate.age);
           expect(body.distance).toEqual(dataToUpdate.distance);
           expect(body.city).toEqual(createMotorDto.city);
-          expect(body.area).toEqual(createMotorDto.area);
+          expect(body.area).toEqual(dataToUpdate.area);
         })
         .expect(HttpStatus.OK);
     });
 
+    // DELETE Motor with ID API test
     it(`/Remove motor with specific ID`, () => {
       return request(app.getHttpServer())
         .delete('/motors/1')
